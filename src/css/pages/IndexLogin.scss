@@ -36,7 +36,6 @@
   background-image: url("/images/google.svg");
   background-repeat: no-repeat; /* Impede que a imagem de fundo se repita */
   background-position: center center; /* Centraliza a imagem de fundo no elemento */
-  margin: 0;
 }
 
 .register-link {
@@ -45,5 +44,13 @@
 }
 
 .register-container {
-  margin-top: 120px;
+  margin-top: 220px;
+}
+
+.btn-register {
+  padding: 0;
+  .q-btn__content {
+    margin-bottom: 2px;
+    margin-left: 5px;
+  }
 }

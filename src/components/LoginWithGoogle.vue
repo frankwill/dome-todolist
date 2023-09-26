@@ -5,11 +5,10 @@
         outline
         to="/login"
         class="btn-login-google full-width q-mb-md q-mt-lg"
-        size="lg"
         color="primary"
         label="Entrar com Google"
         no-caps
-        icon=""
+        icon
       />
     </div>
   </div>
