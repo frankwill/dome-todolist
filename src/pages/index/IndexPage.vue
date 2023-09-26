@@ -4,7 +4,7 @@
       <div class="col col-sm-6 col-md-6 flex justify-center items-center">
         <img
           alt="Quasar logo"
-          src="../../../public/images/todo-logo.svg"
+          src="/images/todo-logo.svg"
           style="width: 200px; height: 200px"
         />
         <h2 class="start-title">Bem-vindo ao UpTodo</h2>
