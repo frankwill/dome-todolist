@@ -16,7 +16,12 @@
 
     <div class="row full-width">
       <div class="col">
-        <q-btn class="full-width q-mb-md" color="primary" label="Entrar" />
+        <q-btn
+          to="/login"
+          class="full-width q-mb-md"
+          color="primary"
+          label="Entrar"
+        />
         <q-btn
           class="full-width"
           outline
