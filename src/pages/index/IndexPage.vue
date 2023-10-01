@@ -25,6 +25,7 @@
         <q-btn
           class="full-width"
           outline
+          to="/register"
           color="primary"
           label="Criar uma conta"
         />

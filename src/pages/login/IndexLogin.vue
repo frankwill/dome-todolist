@@ -1,14 +1,6 @@
 <template>
-  <div class="row">
-    <q-btn
-      to="/"
-      flat
-      class="q-pa-none"
-      color="primary"
-      icon="chevron_left"
-      label="Voltar"
-    />
-  </div>
+  <ReturnPage return-to="/" />
+
   <h2 class="text-h4 q-pa-lg text-weight-bold">Conecte-se</h2>
 
   <div class="row flex justify-center items-center">
@@ -22,7 +14,6 @@
           bg-color="dark"
           color="primary"
           placeholder="Entre com o seu usuário"
-          hide-bottom-space="true"
         />
         <label class="text-h6" for="">Senha</label>
         <q-input
@@ -30,17 +21,16 @@
           class="q-pt-sm"
           outlined
           type="password"
+          hide-bottom-space
           bg-color="dark"
           color="primary"
           placeholder="Entre com a sua senha"
-          hide-bottom-space="true"
         />
         <q-btn
           to="/login"
           class="full-width q-mb-md q-mt-xl"
           color="primary"
           label="Entrar"
-          no-caps
         />
       </q-form>
     </div>
@@ -70,12 +60,10 @@
 <script>
 import { defineComponent } from "vue";
 import { ref } from "vue";
-import SeparatorLine from "src/components/SeparatorLine.vue";
 import LoginWithGoogle from "src/components/LoginWithGoogle.vue";
 
 export default defineComponent({
   components: {
-    SeparatorLine,
     LoginWithGoogle,
   },
   data() {
