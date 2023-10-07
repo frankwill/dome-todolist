@@ -27,7 +27,7 @@
           placeholder="Entre com a sua senha"
         />
         <q-btn
-          to="/login"
+          to="/home"
           class="full-width q-mb-md q-mt-xl"
           color="primary"
           label="Entrar"
