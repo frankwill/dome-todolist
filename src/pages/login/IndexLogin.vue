@@ -1,3 +1,4 @@
+<!-- INDEXLOGIN -->
 <template>
   <ReturnPage return-to="/" />
 
@@ -27,10 +28,10 @@
           placeholder="Entre com a sua senha"
         />
         <q-btn
-          to="/home"
           class="full-width q-mb-md q-mt-xl"
           color="primary"
           label="Entrar"
+          @click="login"
         />
       </q-form>
     </div>
@@ -71,6 +72,25 @@ export default defineComponent({
       username: ref(""),
       password: ref(""),
     };
+  },
+  methods: {
+    async login() {
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({ username: "frank", password: "admin123" }),
+      };
+
+      const response = await fetch(
+        "https://makemerememberapi.azurewebsites.net/api/login/",
+        options
+      );
+
+      const responseJson = await response.json();
+      console.log(responseJson);
+    },
   },
 });
 </script>
