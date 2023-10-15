@@ -13,23 +13,13 @@
         </p>
       </div>
     </div>
-
-    <div class="row full-width">
-      <div class="col">
-        <q-btn
-          to="/login"
-          class="full-width q-mb-md"
-          color="primary"
-          label="Entrar"
-        />
-        <q-btn
-          class="full-width"
-          outline
-          to="/register"
-          color="primary"
-          label="Criar uma conta"
-        />
-      </div>
+    <div class="full-width">
+      <base-button title="Entrar" page="/login"></base-button>
+      <base-button
+        title="Criar uma conta"
+        page="/register"
+        outline
+      ></base-button>
     </div>
   </q-page>
 </template>

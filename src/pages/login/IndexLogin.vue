@@ -6,7 +6,7 @@
 
   <div class="row flex justify-center items-center">
     <div class="col-10">
-      <q-form class="form-container">
+      <q-form @submit.prevent="onSubmit" class="form-container">
         <label class="text-h6" for="">Usuário</label>
         <q-input
           v-model="username"
@@ -27,12 +27,11 @@
           color="primary"
           placeholder="Entre com a sua senha"
         />
-        <q-btn
+        <base-button
           class="full-width q-mb-md q-mt-xl"
-          color="primary"
-          label="Entrar"
-          @click="login"
-        />
+          title="Entrar"
+          type="submit"
+        ></base-button>
       </q-form>
     </div>
   </div>
@@ -63,24 +62,30 @@ import { defineComponent } from "vue";
 import { ref } from "vue";
 import LoginWithGoogle from "src/components/LoginWithGoogle.vue";
 
+import { useQuasar } from "quasar";
+
 export default defineComponent({
   components: {
     LoginWithGoogle,
   },
   data() {
     return {
+      q: useQuasar(),
       username: ref(""),
       password: ref(""),
     };
   },
   methods: {
-    async login() {
+    async onSubmit() {
       const options = {
         method: "POST",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
         },
-        body: JSON.stringify({ username: "frank", password: "admin123" }),
+        body: JSON.stringify({
+          username: this.username,
+          password: this.password,
+        }),
       };
 
       const response = await fetch(
@@ -89,7 +94,19 @@ export default defineComponent({
       );
 
       const responseJson = await response.json();
-      console.log(responseJson);
+      if (responseJson.access) {
+        localStorage.setItem("user", JSON.stringify(responseJson.access));
+        this.$router.push("/home");
+      } else {
+        let customError = responseJson.detail;
+        customError = "Usuário ou senha inválidos.";
+        this.q.notify({
+          message: customError,
+          color: "negative",
+          timeout: 2000,
+          position: "top",
+        });
+      }
     },
   },
 });
