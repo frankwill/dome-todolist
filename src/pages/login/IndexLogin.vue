@@ -94,8 +94,8 @@ export default defineComponent({
       );
 
       const responseJson = await response.json();
-      if (responseJson.access) {
-        localStorage.setItem("user", JSON.stringify(responseJson.access));
+      if (responseJson.token) {
+        localStorage.setItem("user", JSON.stringify(responseJson.token));
         this.$router.push("/home");
       } else {
         let customError = responseJson.detail;
