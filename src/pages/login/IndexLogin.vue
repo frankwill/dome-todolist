@@ -15,7 +15,11 @@
           bg-color="dark"
           color="primary"
           placeholder="Entre com o seu usuário"
+          :rules="[
+            (val) => (val && val.length > 0) || 'Campo Usuário é obrigatório!',
+          ]"
         />
+
         <label class="text-h6" for="">Senha</label>
         <q-input
           v-model="password"
@@ -26,6 +30,9 @@
           bg-color="dark"
           color="primary"
           placeholder="Entre com a sua senha"
+          :rules="[
+            (val) => (val && val.length > 0) || 'Campo Senha é obrigatório!',
+          ]"
         />
         <base-button
           class="full-width q-mb-md q-mt-xl"
@@ -73,10 +80,15 @@ export default defineComponent({
       q: useQuasar(),
       username: ref(""),
       password: ref(""),
+      timer: null,
     };
   },
   methods: {
     async onSubmit() {
+      this.q.loading.show({
+        spinnerColor: "primary",
+      });
+
       const options = {
         method: "POST",
         headers: {
@@ -100,6 +112,7 @@ export default defineComponent({
       } else {
         let customError = responseJson.detail;
         customError = "Usuário ou senha inválidos.";
+
         this.q.notify({
           message: customError,
           color: "negative",
@@ -107,6 +120,8 @@ export default defineComponent({
           position: "top",
         });
       }
+
+      this.q.loading.hide();
     },
   },
 });

@@ -32,5 +32,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+  beforeUnmount() {
+    console.log("HOME DESMONTADA");
+  },
+};
 </script>
