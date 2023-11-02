@@ -20,21 +20,18 @@
 
     <q-footer class="bg-dark q-pa-md">
       <q-toolbar class="justify-center">
-        <q-btn class="footer-btn" color="primary" size="lg" round disable>
-          <q-icon size="1.5rem" name="add" />
-        </q-btn>
-        <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 60]">
-          Em construção...🔥
-        </q-tooltip>
+        <dialog-add-task-home></dialog-add-task-home>
       </q-toolbar>
     </q-footer>
   </q-layout>
 </template>
 
 <script>
+import DialogAddTaskHome from "../../components/home/DialogAddTaskHome.vue";
+
 export default {
-  beforeUnmount() {
-    console.log("HOME DESMONTADA");
+  components: {
+    DialogAddTaskHome,
   },
 };
 </script>

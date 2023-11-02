@@ -6,3 +6,11 @@
   position: absolute;
   margin-bottom: 80px;
 }
+
+.q-field__control {
+  border: 0.5px solid $border-input;
+}
+
+.q-field__native {
+  color: $white;
+}
