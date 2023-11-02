@@ -89,6 +89,8 @@ export default defineComponent({
         spinnerColor: "primary",
       });
 
+      localStorage.clear();
+
       const options = {
         method: "POST",
         headers: {
@@ -107,7 +109,10 @@ export default defineComponent({
 
       const responseJson = await response.json();
       if (responseJson.token) {
-        localStorage.setItem("user", JSON.stringify(responseJson.token));
+        localStorage.setItem(
+          "user",
+          JSON.stringify("Bearer " + responseJson.token)
+        );
         this.$router.push("/home");
       } else {
         let customError = responseJson.detail;

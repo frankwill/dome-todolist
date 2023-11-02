@@ -33,5 +33,25 @@ export default {
   components: {
     DialogAddTaskHome,
   },
+  methods: {
+    async getTaks() {
+      const userToken = localStorage.getItem("user");
+
+      const response = await fetch(
+        "https://makemerememberapi.azurewebsites.net/api/task/",
+        {
+          headers: {
+            Authorization: JSON.parse(userToken),
+          },
+        }
+      );
+
+      const responseJson = await response.json();
+      console.log(responseJson);
+    },
+  },
+  created() {
+    this.getTaks();
+  },
 };
 </script>
