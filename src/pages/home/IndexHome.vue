@@ -11,12 +11,47 @@
     </q-header>
 
     <q-page-container class="row justify-center items-center">
-      <q-page class="page-info column justify-center items-center">
+      <q-page
+        class="page-info column justify-center items-center"
+        v-if="tasks.length === 0"
+      >
         <img src="images/home/vector-1.svg" />
         <p>O que você quer fazer hoje?</p>
         <p>Toque em + para adicionar suas tarefas</p>
       </q-page>
     </q-page-container>
+
+    <div class="page-info q-pa-lg">
+      <q-card class="bg-dark row" flat v-for="task in tasks" :key="task.id">
+        <q-radio v-model="shape" value="line" />
+        <q-card-section class="text-white q-py-sm col">
+          <span class="text-h6">{{ task.title }}</span>
+          <div class="text-subtitle2 flex items-center justify-between q-pt-sm">
+            <span>Hoje às 16h45</span>
+            <div class="flex q-gutter-sm">
+              <q-badge class="badge-task-university">
+                <q-icon
+                  name="img:images/icons/task-categorys/university.svg"
+                  color="white"
+                  size="1.2rem"
+                  class="q-mr-sm"
+                />
+                <label class="badge-text">{{ task.tag }}</label>
+              </q-badge>
+              <q-badge outline class="badge-task q-pa-sm">
+                <q-icon
+                  name="img:images/icons/flag.svg"
+                  color="white"
+                  size="1.2rem"
+                  class="q-mr-sm"
+                />
+                <label class="badge-text">{{ task.priority }}</label>
+              </q-badge>
+            </div>
+          </div>
+        </q-card-section>
+      </q-card>
+    </div>
 
     <q-footer class="bg-dark q-pa-md">
       <q-toolbar class="justify-center">
@@ -28,8 +63,15 @@
 
 <script>
 import DialogAddTaskHome from "../../components/home/DialogAddTaskHome.vue";
+import { ref } from "vue";
 
 export default {
+  data() {
+    return {
+      tasks: [],
+      shape: ref(false),
+    };
+  },
   components: {
     DialogAddTaskHome,
   },
@@ -38,7 +80,7 @@ export default {
       const userToken = localStorage.getItem("user");
 
       const response = await fetch(
-        "https://makemerememberapi.azurewebsites.net/api/task/",
+        "https://makemerememberapi.azurewebsites.net/api/tasks/",
         {
           headers: {
             Authorization: JSON.parse(userToken),
@@ -47,7 +89,8 @@ export default {
       );
 
       const responseJson = await response.json();
-      console.log(responseJson);
+      responseJson.map((task) => this.tasks.push(task));
+      console.log(this.tasks);
     },
   },
   created() {

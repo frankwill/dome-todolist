@@ -5,7 +5,7 @@
   <q-form class="form-container">
     <q-dialog v-model="dialog" :position="position">
       <q-card style="width: 350px" dark flat>
-        <q-card-section class="row items-center no-wrap">
+        <q-card-section class="bg-dark row items-center no-wrap">
           <div class="col-12">
             <span class="text-weight-bold">Adicionar tarefa</span>
             <q-input
