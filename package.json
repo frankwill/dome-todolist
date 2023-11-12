@@ -1,8 +1,8 @@
 {
-  "name": "dome-todo",
+  "name": "make-me-remeber-todo",
   "version": "0.0.1",
   "description": "A Quasar Project",
-  "productName": "DoMe App",
+  "productName": "Make Me Remember",
   "author": "frankwill <frank.will999@gmail.com>",
   "private": true,
   "scripts": {

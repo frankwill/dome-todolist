@@ -2,6 +2,10 @@
   background-color: $template;
 }
 
+.page-container {
+  padding: 2.2rem 0 !important;
+}
+
 .footer-btn {
   position: absolute;
   margin-bottom: 80px;
@@ -13,10 +17,6 @@
 
 .q-field__native {
   color: $white;
-}
-
-.badge-task-university {
-  background-color: #809cff;
 }
 
 .badge-task {

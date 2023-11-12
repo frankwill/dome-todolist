@@ -10,7 +10,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-page-container class="row justify-center items-center">
+    <q-page-container class="page-container row justify-center items-center">
       <q-page
         class="page-info column justify-center items-center"
         v-if="tasks.length === 0"
@@ -21,27 +21,25 @@
       </q-page>
     </q-page-container>
 
-    <div class="page-info q-pa-lg">
+    <div class="page-info q-pa-lg q-gutter-md">
       <q-card class="bg-dark row" flat v-for="task in tasks" :key="task.id">
-        <q-radio v-model="shape" value="line" />
+        <q-radio v-model="shape" val="line" />
         <q-card-section class="text-white q-py-sm col">
           <span class="text-h6">{{ task.title }}</span>
           <div class="text-subtitle2 flex items-center justify-between q-pt-sm">
-            <span>Hoje às 16h45</span>
+            <span>{{ task.dateTime }}</span>
             <div class="flex q-gutter-sm">
-              <q-badge class="badge-task-university">
+              <q-badge :color="dynamicColor(task)">
                 <q-icon
-                  name="img:images/icons/task-categorys/university.svg"
-                  color="white"
+                  :name="dynamicIcon(task)"
                   size="1.2rem"
                   class="q-mr-sm"
                 />
-                <label class="badge-text">{{ task.tag }}</label>
+                <label class="text-weight-medium">{{ task.tag }}</label>
               </q-badge>
               <q-badge outline class="badge-task q-pa-sm">
                 <q-icon
                   name="img:images/icons/flag.svg"
-                  color="white"
                   size="1.2rem"
                   class="q-mr-sm"
                 />
@@ -70,12 +68,43 @@ export default {
     return {
       tasks: [],
       shape: ref(false),
+      categorieColors: {
+        Mercado: "green-1",
+        Trabalho: "red-1",
+        Esporte: "blue-1",
+        Projeto: "green-3",
+        Universidade: "blue-2",
+        Social: "red-2",
+        Musica: "red-3",
+        Saude: "green-2",
+        Filme: "blue-3",
+        Casa: "red-4",
+      },
+      categorieIcons: {
+        Mercado: "img:images/icons/task-categorys/food.svg",
+        Trabalho: "img:images/icons/task-categorys/work.svg",
+        Esporte: "img:images/icons/task-categorys/sport.svg",
+        Projeto: "img:images/icons/task-categorys/design.svg",
+        Universidade: "img:images/icons/task-categorys/university.svg",
+        Social: "img:images/icons/task-categorys/social.svg",
+        Musica: "img:images/icons/task-categorys/music.svg",
+        Saude: "img:images/icons/task-categorys/health.svg",
+        Filme: "img:images/icons/task-categorys/movie.svg",
+        Casa: "img:images/icons/task-categorys/home.svg",
+      },
     };
   },
   components: {
     DialogAddTaskHome,
   },
   methods: {
+    dynamicColor(task) {
+      return this.categorieColors[task.tag] || "primary";
+    },
+    dynamicIcon(task) {
+      // img:images/icons/flag.svg
+      return this.categorieIcons[task.tag] || null;
+    },
     async getTaks() {
       const userToken = localStorage.getItem("user");
 
