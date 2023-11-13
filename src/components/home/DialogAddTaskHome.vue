@@ -22,6 +22,11 @@
                 label-color="white"
                 placeholder="Arrumar o quarto"
                 v-model="enteredTitle"
+                :rules="[
+                  (val) =>
+                    (val && val.length > 0) ||
+                    'O Titulo da taréfa é obrigatório.',
+                ]"
               />
               <q-input
                 class="q-pt-sm"
@@ -31,9 +36,6 @@
                 placeholder="Descrição"
                 v-model="enteredDesc"
               />
-              <label class="q-pt-md block"
-                >Categoria escolhida: {{ nameCategorie }}</label
-              >
             </div>
           </div>
         </q-card-section>
@@ -52,7 +54,9 @@
               icon="img:images/icons/tag.svg"
               padding="0"
               @click="showDialogChooseCategory"
-            />
+            >
+              <q-badge v-show="!nameCategorie" floating color="red" rounded />
+            </q-btn>
             <q-btn
               flat
               color="primary"
@@ -67,6 +71,7 @@
             icon="img:images/icons/send.svg"
             type="submit"
             @click="addTasks"
+            :disable="!isComplete"
           />
         </q-card-actions>
       </q-card>
@@ -97,7 +102,14 @@
                 :icon="categorie.icon"
                 @click="setCategorie(categorie.name)"
               />
-              <label>{{ categorie.name }}</label>
+              <label
+                :rules="[
+                  (val) =>
+                    (val && val.length > 0) ||
+                    'É necessário vincular a taréfa a alguma tag.',
+                ]"
+                >{{ categorie.name }}</label
+              >
             </div>
           </div>
         </q-card-section>
@@ -185,6 +197,11 @@ export default {
         },
       ],
     };
+  },
+  computed: {
+    isComplete() {
+      return this.enteredTitle && this.nameCategorie;
+    },
   },
   methods: {
     showDialogAddTask() {
