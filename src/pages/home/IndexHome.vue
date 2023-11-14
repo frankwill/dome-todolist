@@ -21,41 +21,72 @@
       </q-page>
     </q-page-container>
 
-    <div class="page-info q-pa-lg q-gutter-md">
-      <q-card class="bg-dark row" flat v-for="task in tasks" :key="task.id">
-        <q-radio v-model="shape" val="line" />
-        <q-card-section class="text-white q-py-sm col">
-          <span class="text-h6">{{ task.title }}</span>
-          <div class="text-subtitle2 flex items-center justify-between q-pt-sm">
-            <span>{{ task.dateTime }}</span>
-            <div class="flex q-gutter-sm">
-              <q-badge :color="dynamicColor(task)">
-                <q-icon
-                  :name="dynamicIcon(task)"
-                  size="1.2rem"
-                  class="q-mr-sm"
-                />
-                <label class="text-weight-medium">{{ task.tag }}</label>
-              </q-badge>
-              <q-badge outline class="badge-task q-pa-sm">
-                <q-icon
-                  name="img:images/icons/flag.svg"
-                  size="1.2rem"
-                  class="q-mr-sm"
-                />
-                <label class="badge-text">{{ task.priority }}</label>
-              </q-badge>
+    <q-scroll-area
+      style="height: 750px"
+      :bar-style="barStyle"
+      :thumb-style="thumbStyle"
+    >
+      <div class="page-info q-pa-lg q-gutter-md">
+        <q-card class="bg-dark row" flat v-for="task in tasks" :key="task.id">
+          <q-card-section
+            @click="infoCard(task)"
+            class="text-white q-py-sm col"
+          >
+            <span class="text-h6">{{ task.title }}</span>
+            <div
+              class="text-subtitle2 flex items-center justify-between q-pt-sm"
+            >
+              <span>{{ task.dateTime }}</span>
+              <div class="flex q-gutter-sm">
+                <q-badge :color="dynamicColor(task)">
+                  <q-icon
+                    :name="dynamicIcon(task)"
+                    size="1.2rem"
+                    class="q-mr-sm"
+                  />
+                  <label class="text-weight-medium">{{ task.tag }}</label>
+                </q-badge>
+                <q-badge outline class="badge-task q-pa-sm">
+                  <q-icon
+                    name="img:images/icons/flag.svg"
+                    size="1.2rem"
+                    class="q-mr-sm"
+                  />
+                  <label class="badge-text">{{ task.priority }}</label>
+                </q-badge>
+              </div>
             </div>
-          </div>
-        </q-card-section>
-      </q-card>
-    </div>
+          </q-card-section>
+        </q-card>
+      </div>
+    </q-scroll-area>
 
     <q-footer class="bg-dark q-pa-md">
       <q-toolbar class="justify-center">
         <dialog-add-task-home></dialog-add-task-home>
       </q-toolbar>
     </q-footer>
+
+    <q-dialog v-model="showModalTask">
+      <q-card dark flat>
+        <q-card-section class="row items-center q-pb-none">
+          <div class="text-h6">Close icon</div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+
+        <q-card-section>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum
+          repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis
+          perferendis totam, ea at omnis vel numquam exercitationem aut, natus
+          minima, porro labore.
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="primary" v-close-popup />
+          <q-btn flat label="Turn on Wifi" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-layout>
 </template>
 
@@ -68,6 +99,21 @@ export default {
     return {
       tasks: [],
       shape: ref(false),
+      showModalTask: false,
+      thumbStyle: {
+        right: "4px",
+        borderRadius: "5px",
+        backgroundColor: "#8875ff",
+        width: "5px",
+        opacity: 0.75,
+      },
+      barStyle: {
+        right: "2px",
+        borderRadius: "9px",
+        backgroundColor: "#8875ff",
+        width: "9px",
+        opacity: 0.2,
+      },
       categorieColors: {
         Mercado: "green-1",
         Trabalho: "red-1",
@@ -98,6 +144,10 @@ export default {
     DialogAddTaskHome,
   },
   methods: {
+    infoCard(task) {
+      console.log(task);
+      this.showModalTask = true;
+    },
     dynamicColor(task) {
       return this.categorieColors[task.tag] || "primary";
     },
@@ -119,7 +169,6 @@ export default {
 
       const responseJson = await response.json();
       responseJson.map((task) => this.tasks.push(task));
-      console.log(this.tasks);
     },
   },
   created() {
