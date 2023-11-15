@@ -70,20 +70,24 @@
     <q-dialog v-model="showModalTask">
       <q-card dark flat>
         <q-card-section class="row items-center q-pb-none">
-          <div class="text-h6">Close icon</div>
+          <span class="text-h6">{{ taskDialogInfo.title }}</span>
           <q-space />
           <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
 
         <q-card-section>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum
-          repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis
-          perferendis totam, ea at omnis vel numquam exercitationem aut, natus
-          minima, porro labore.
+          Tem certeza de que deseja excluir esta tarefa? Essa ação não poderá
+          ser desfeita.
         </q-card-section>
         <q-card-actions align="right">
-          <q-btn flat label="Cancel" color="primary" v-close-popup />
-          <q-btn flat label="Turn on Wifi" color="primary" v-close-popup />
+          <q-btn
+            flat
+            label="Sim, tenho certeza"
+            color="primary"
+            v-close-popup
+            @click="deleteTask(taskDialogInfo.id)"
+          />
+          <q-btn flat label="Cancelar" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -92,12 +96,15 @@
 
 <script>
 import DialogAddTaskHome from "../../components/home/DialogAddTaskHome.vue";
-import { ref } from "vue";
+import { ref, nextTick } from "vue";
+import { useQuasar } from "quasar";
 
 export default {
   data() {
     return {
+      q: useQuasar(),
       tasks: [],
+      taskDialogInfo: null,
       shape: ref(false),
       showModalTask: false,
       thumbStyle: {
@@ -122,7 +129,7 @@ export default {
         Universidade: "blue-2",
         Social: "red-2",
         Musica: "red-3",
-        Saude: "green-2",
+        Saúde: "green-2",
         Filme: "blue-3",
         Casa: "red-4",
       },
@@ -133,11 +140,16 @@ export default {
         Projeto: "img:images/icons/task-categorys/design.svg",
         Universidade: "img:images/icons/task-categorys/university.svg",
         Social: "img:images/icons/task-categorys/social.svg",
-        Musica: "img:images/icons/task-categorys/music.svg",
-        Saude: "img:images/icons/task-categorys/health.svg",
+        Música: "img:images/icons/task-categorys/music.svg",
+        Saúde: "img:images/icons/task-categorys/health.svg",
         Filme: "img:images/icons/task-categorys/movie.svg",
         Casa: "img:images/icons/task-categorys/home.svg",
       },
+    };
+  },
+  provide() {
+    return {
+      allTasks: this.tasks,
     };
   },
   components: {
@@ -146,6 +158,7 @@ export default {
   methods: {
     infoCard(task) {
       console.log(task);
+      this.taskDialogInfo = task;
       this.showModalTask = true;
     },
     dynamicColor(task) {
@@ -170,8 +183,45 @@ export default {
       const responseJson = await response.json();
       responseJson.map((task) => this.tasks.push(task));
     },
+    async deleteTask(idTask) {
+      const userToken = localStorage.getItem("user");
+      const response = await fetch(
+        `https://makemerememberapi.azurewebsites.net/api/task/${idTask}/`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: JSON.parse(userToken),
+          },
+        }
+      );
+
+      if (response.ok) {
+        // Remova o item do DOM
+        const indexToRemove = this.tasks.findIndex(
+          (task) => task.id === idTask
+        );
+        if (indexToRemove !== -1) {
+          this.tasks.splice(indexToRemove, 1);
+        }
+
+        this.q.notify({
+          message: "Tarefa excluída com sucesso.",
+          color: "positive",
+          timeout: 2000,
+          position: "top",
+        });
+      } else {
+        const errorJson = await response.json();
+        this.q.notify({
+          message: `Erro ao excluir a tarefa: ${errorJson.msg}`,
+          color: "negative",
+          timeout: 2000,
+          position: "top",
+        });
+      }
+    },
   },
-  created() {
+  mounted() {
     this.getTaks();
   },
 };

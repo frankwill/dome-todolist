@@ -124,10 +124,13 @@
 
 <script>
 import { ref } from "vue";
+import { useQuasar } from "quasar";
 
 export default {
+  inject: ["allTasks"],
   data() {
     return {
+      q: useQuasar(),
       dialog: false,
       dialogChooseCategory: false,
       position: "bottom",
@@ -236,10 +239,29 @@ export default {
         "https://makemerememberapi.azurewebsites.net/api/task/add/",
         responseObject
       );
-      const responseJson = await response.json();
 
-      console.log(responseJson);
-      console.log("Enviou");
+      if (response.ok) {
+        // this.allTasks.push(response);
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+
+        this.q.notify({
+          message: "Tarefa adicionada com sucesso.",
+          color: "positive",
+          timeout: 2000,
+          position: "top",
+        });
+      } else {
+        const errorJson = await response.json();
+        this.q.notify({
+          message: `Erro ao adicionar a tarefa: ${errorJson.msg}`,
+          color: "negative",
+          timeout: 2000,
+          position: "top",
+        });
+      }
     },
   },
 };
