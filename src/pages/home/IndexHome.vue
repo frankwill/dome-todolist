@@ -22,6 +22,7 @@
     </q-page-container>
 
     <q-scroll-area
+      v-if="tasks.length > 0"
       style="height: 750px"
       :bar-style="barStyle"
       :thumb-style="thumbStyle"
