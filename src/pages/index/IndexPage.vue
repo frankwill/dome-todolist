@@ -7,7 +7,8 @@
           src="/images/make-me-remember-logo.svg"
           style="width: 200px; height: 200px"
         />
-        <h2 class="start-title">Bem-vindo ao Make Me Remember</h2>
+        <h2 class="start-title q-ma-none">Bem-vindo ao</h2>
+        <h2 class="start-title q-ma-none">Make Me Remember</h2>
         <p class="start-info text-center">
           Faça login em sua conta ou crie uma nova conta para continuar
         </p>
