@@ -9,6 +9,16 @@ class UserController
 
   public static function processaRequisicao(UserRepository $userRepository)
   {
-    return $userRepository->all();
+    $videoListJson = array_map(function ($data) {
+      return [
+        "id" => $data->getId(),
+        "username" => $data->getUsername(),
+        "password" => $data->getPassword(),
+        "name" => $data->getName(),
+        "email" => $data->getEmail()
+      ];
+    }, $userRepository->all());
+
+    echo json_encode($videoListJson);
   }
 }

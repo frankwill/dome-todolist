@@ -19,13 +19,30 @@ class UserRepository
     $statement = $this->pdo->query("SELECT * FROM user");
     $dataArray = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-    return json_encode($dataArray, JSON_PRETTY_PRINT);
-
-    // return $this->hydrateUsers($dataArray);
+    return $this->hydrateUsers($dataArray);
   }
 
-  public function add()
+  public function add(User $user)
   {
+    $sql = "INSERT INTO user (
+        username_user,
+        password_user,
+        name_user,
+        email_user
+      ) VALUES (
+        :username_user,
+        :password_user,
+        :name_user,
+        :email_user
+      )";
+
+    $statement = $this->pdo->prepare($sql);
+    $statement->bindValue(":username_user", $user->getUsername());
+    $statement->bindValue(":password_user", $user->getPassword());
+    $statement->bindValue(":name_user", $user->getName());
+    $statement->bindValue(":email_user", $user->getEmail());
+
+    return $statement->execute();
   }
 
   public function edit()
@@ -39,7 +56,7 @@ class UserRepository
   private function hydrateUsers(array $dataArray)
   {
     $dataObject = array_map(function ($data) {
-      $userObjects[] = new User(
+      $userObjects = new User(
         $data['id_user'],
         $data['username_user'],
         $data['password_user'],

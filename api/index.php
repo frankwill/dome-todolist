@@ -1,5 +1,6 @@
 <?php
 
+use mmr\todolist\Aplication\AddUserController;
 use mmr\todolist\Aplication\UserController;
 
 require __DIR__ . "/../vendor/autoload.php";
@@ -12,5 +13,6 @@ $repository = new UserRepository($connection);
 
 if ($_SERVER['REQUEST_URI'] === "/api/getUsers" && $_SERVER['REQUEST_METHOD'] === "GET") {
   $controller = UserController::processaRequisicao($repository);
-  // var_dump($controller);
+} else if ($_SERVER['REQUEST_URI'] === "/api/addUsers" && $_SERVER['REQUEST_METHOD'] === "POST") {
+  $controller = AddUserController::processaRequisicao($repository);
 }
