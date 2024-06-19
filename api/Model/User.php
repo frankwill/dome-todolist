@@ -4,13 +4,13 @@ namespace mmr\todolist\Model;
 
 class User
 {
-  private int $id;
+  private ?int $id;
   private string $username;
   private string $password;
   private string $name;
   private string $email;
 
-  public function __construct(int $id, string $username, string $password, string $name, string $email)
+  public function __construct(?int $id, string $username, string $password, string $name, string $email)
   {
     $this->id = $id;
     $this->username = $username;
