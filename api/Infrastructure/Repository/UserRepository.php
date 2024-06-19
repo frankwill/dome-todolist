@@ -14,7 +14,7 @@ class UserRepository
     $this->pdo = $pdo;
   }
 
-  public function all()
+  public function all(): array
   {
     $statement = $this->pdo->query("SELECT * FROM user");
     $dataArray = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -22,7 +22,7 @@ class UserRepository
     return $this->hydrateUsers($dataArray);
   }
 
-  public function add(User $user)
+  public function add(User $user): bool
   {
     $sql = "INSERT INTO user (
         username_user,
@@ -45,8 +45,26 @@ class UserRepository
     return $statement->execute();
   }
 
-  public function edit()
+  public function edit(User $user): bool
   {
+    $sql = "UPDATE user
+            SET
+              username_user = :username_user,
+              password_user = :password_user,
+              name_user     = :name_user,
+              email_use     = :email_user
+            WHERE
+              id = :id";
+
+    $statement = $this->pdo->prepare($sql);
+    $result = $statement->execute([
+      ":username_user" => $user->getUsername(),
+      ":password_user" => $user->getPassword(),
+      ":name_user" => $user->getName(),
+      ":email_user" => $user->getEmail()
+    ]);
+
+    return $result;
   }
 
   public function remove()
