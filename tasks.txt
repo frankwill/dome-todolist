@@ -1,0 +1,8 @@
+- BACK-END
+[
+  [  ] - Criar tratamento de erros e mensagems de retorno nas requisições http (controllers).
+  [  ] - Criar tratamento de erros e mensagems de retorno referente ao banco de dados (repository).
+  [ x ] - Criar o método remove() em UserRepository e seu respectivo controlador.
+  [  ] -
+]
+
