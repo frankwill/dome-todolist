@@ -45,7 +45,7 @@ class UserRepository
     return $statement->execute();
   }
 
-  public function edit(User $user): bool
+  public function edit(User $user, $id): bool
   {
     $sql = "UPDATE user
             SET
@@ -61,7 +61,8 @@ class UserRepository
       ":username_user" => $user->getUsername(),
       ":password_user" => $user->getPassword(),
       ":name_user" => $user->getName(),
-      ":email_user" => $user->getEmail()
+      ":email_user" => $user->getEmail(),
+      ":id" => $id
     ]);
 
     return $result;
