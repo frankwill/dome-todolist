@@ -10,18 +10,16 @@ class EditUserController
   public static function processaRequisicao(UserRepository $userRepository)
   {
     $response = file_get_contents("php://input");
-    $userData = json_decode($response, true);
+    $userList = json_decode($response, true);
 
-    var_dump($userData);
+    $userData = new User(
+      $userList['id_user'],
+      $userList['username_user'],
+      $userList['password_user'],
+      $userList['name_user'],
+      $userList['email_user']
+    );
 
-    // $user = new User(
-    //   $userData['id'] = null,
-    //   $userData['username_user'],
-    //   $userData['password_user'],
-    //   $userData['name_user'],
-    //   $userData['email_user']
-    // );
-
-    // $userRepository->add($user);
+    $userRepository->edit($userData, $userList['id_user']);
   }
 }

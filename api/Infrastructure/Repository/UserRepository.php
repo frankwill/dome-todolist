@@ -45,16 +45,16 @@ class UserRepository
     return $statement->execute();
   }
 
-  public function edit(User $user, $id): bool
+  public function edit(User $user, int $id): bool
   {
     $sql = "UPDATE user
             SET
               username_user = :username_user,
               password_user = :password_user,
               name_user     = :name_user,
-              email_use     = :email_user
+              email_user     = :email_user
             WHERE
-              id = :id";
+              id_user = :id_user";
 
     $statement = $this->pdo->prepare($sql);
     $result = $statement->execute([
@@ -62,7 +62,7 @@ class UserRepository
       ":password_user" => $user->getPassword(),
       ":name_user" => $user->getName(),
       ":email_user" => $user->getEmail(),
-      ":id" => $id
+      ":id_user" => $id
     ]);
 
     return $result;

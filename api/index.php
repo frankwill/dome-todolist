@@ -1,11 +1,10 @@
 <?php
 
+require __DIR__ . "/../vendor/autoload.php";
+
 use mmr\todolist\Aplication\AddUserController;
 use mmr\todolist\Aplication\EditUserController;
 use mmr\todolist\Aplication\UserController;
-
-require __DIR__ . "/../vendor/autoload.php";
-
 use mmr\todolist\Infrastructure\Persistence\ConnectionCreate;
 use mmr\todolist\Infrastructure\Repository\UserRepository;
 
@@ -16,6 +15,6 @@ if ($_SERVER['REQUEST_URI'] === "/api/getUsers" && $_SERVER['REQUEST_METHOD'] ==
   $controller = UserController::processaRequisicao($repository);
 } else if ($_SERVER['REQUEST_URI'] === "/api/addUsers" && $_SERVER['REQUEST_METHOD'] === "POST") {
   $controller = AddUserController::processaRequisicao($repository);
-} else if ($_SERVER['REQUEST_URI'] === "/api/editUsers/{id}" && $_SERVER['REQUEST_METHOD'] === "PUT") {
+} else if ($_SERVER['REQUEST_URI'] === "/api/editUsers" && $_SERVER['REQUEST_METHOD'] === "PUT") {
   $controller = EditUserController::processaRequisicao($repository);
 }
