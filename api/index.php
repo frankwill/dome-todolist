@@ -12,7 +12,7 @@ use mmr\todolist\Infrastructure\Repository\UserRepository;
 $connection = ConnectionCreate::CreateConnection();
 $repository = new UserRepository($connection);
 
-if ($_SERVER['REQUEST_URI'] === "/api/getUsers" && $_SERVER['REQUEST_METHOD'] === "GET") {
+if ($_SERVER['REQUEST_URI'] === "/api/getUsers" && $_SERVER['REQUEST_METHOD'] === "POST") {
   $controller = UserController::processaRequisicao($repository);
 } else if ($_SERVER['REQUEST_URI'] === "/api/addUsers" && $_SERVER['REQUEST_METHOD'] === "POST") {
   $controller = AddUserController::processaRequisicao($repository);

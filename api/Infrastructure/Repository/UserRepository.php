@@ -14,12 +14,16 @@ class UserRepository
     $this->pdo = $pdo;
   }
 
-  public function all(): array
+  public function find(string $username, string $password): array
   {
-    $statement = $this->pdo->query("SELECT * FROM user");
-    $dataArray = $statement->fetchAll(PDO::FETCH_ASSOC);
+    $sql = "SELECT * FROM user WHERE username_user = ? AND password_user = ?";
+    $statement = $this->pdo->prepare($sql);
+    $statement->bindValue(1, $username);
+    $statement->bindValue(2, $password);
 
-    return $this->hydrateUsers($dataArray);
+    $statement->execute();
+
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
   }
 
   public function add(User $user): bool

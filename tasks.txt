@@ -2,7 +2,8 @@
 [
   [  ] - Criar tratamento de erros e mensagems de retorno nas requisições http (controllers).
   [  ] - Criar tratamento de erros e mensagems de retorno referente ao banco de dados (repository).
-  [ x ] - Criar o método remove() em UserRepository e seu respectivo controlador.
+  [ x ] - Criar o método remove() em UserRepository e seu respectivo controlador. - 20/06/24
+  [ x ] - Arrumar retorno do método find() e arrumar retorno das requisições http. - 21/06/24
   [  ] -
 ]
 
