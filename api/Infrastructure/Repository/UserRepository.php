@@ -14,16 +14,30 @@ class UserRepository
     $this->pdo = $pdo;
   }
 
-  public function find(string $username, string $password): array
+  public function find(string $username): array
   {
-    $sql = "SELECT * FROM user WHERE username_user = ? AND password_user = ?";
+    $sql = "SELECT password_user FROM user WHERE username_user = ?";
     $statement = $this->pdo->prepare($sql);
     $statement->bindValue(1, $username);
-    $statement->bindValue(2, $password);
 
     $statement->execute();
 
-    return $statement->fetchAll(PDO::FETCH_ASSOC);
+    $password_user = $statement->fetch(PDO::FETCH_ASSOC)['password_user'] ?? "";
+
+    if (is_null($password_user) || $password_user == false) {
+      $response = [
+        "message" => "Usuário ou senha inválidos",
+        "statusCode" => http_response_code(400)
+      ];
+
+      echo json_encode($response);
+      exit();
+    }
+
+    return $response = [
+      "message" => "Usuário autenticado com sucesso",
+      "statusCode" => http_response_code(200)
+    ];
   }
 
   public function add(User $user): bool
