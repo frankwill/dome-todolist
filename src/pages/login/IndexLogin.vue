@@ -85,48 +85,47 @@ export default defineComponent({
   },
   methods: {
     async onSubmit() {
-      this.q.loading.show({
-        spinnerColor: "primary",
-      });
-
-      localStorage.clear();
+      // this.q.loading.show({
+      //   spinnerColor: "primary",
+      // });
 
       const options = {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json;charset=utf-8",
-        },
         body: JSON.stringify({
-          username: this.username,
-          password: this.password,
+          username_user: this.username,
+          password_user: this.password,
         }),
       };
 
       const response = await fetch(
-        "https://makemerememberapi.azurewebsites.net/api/login/",
+        "http://localhost:8000/api/OauthUsers",
         options
       );
 
       const responseJson = await response.json();
-      if (responseJson.token) {
-        localStorage.setItem(
-          "user",
-          JSON.stringify("Bearer " + responseJson.token)
-        );
-        this.$router.push("/home");
-      } else {
-        let customError = responseJson.detail;
-        customError = "Usuário ou senha inválidos.";
+      console.log(response);
+      console.log(responseJson);
 
-        this.q.notify({
-          message: customError,
-          color: "negative",
-          timeout: 2000,
-          position: "top",
-        });
-      }
+      // const responseJson = await response.json();
+      // if (responseJson.token) {
+      //   localStorage.setItem(
+      //     "user",
+      //     JSON.stringify("Bearer " + responseJson.token)
+      //   );
+      //   this.$router.push("/home");
+      // } else {
+      //   let customError = responseJson.detail;
+      //   customError = "Usuário ou senha inválidos.";
 
-      this.q.loading.hide();
+      //   this.q.notify({
+      //     message: customError,
+      //     color: "negative",
+      //     timeout: 2000,
+      //     position: "top",
+      //   });
+      // }
+
+      // this.q.loading.hide();
     },
   },
 });

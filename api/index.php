@@ -2,6 +2,9 @@
 
 require __DIR__ . "/../vendor/autoload.php";
 
+header('Access-Control-Allow-Origin: http://localhost:9000');
+header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
+
 use mmr\todolist\Aplication\AddUserController;
 use mmr\todolist\Aplication\EditUserController;
 use mmr\todolist\Aplication\OauthUserController;

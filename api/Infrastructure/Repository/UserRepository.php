@@ -19,25 +19,18 @@ class UserRepository
     $sql = "SELECT password_user FROM user WHERE username_user = ?";
     $statement = $this->pdo->prepare($sql);
     $statement->bindValue(1, $username);
-
     $statement->execute();
 
     $password_user = $statement->fetch(PDO::FETCH_ASSOC)['password_user'] ?? "";
 
     if (is_null($password_user) || $password_user == false) {
-      $response = [
-        "message" => "Usuário ou senha inválidos",
-        "statusCode" => http_response_code(400)
-      ];
-
+      $response = ["message" => "Usuário ou senha inválidos"];
+      http_response_code(400);
       echo json_encode($response);
       exit();
     }
 
-    return $response = [
-      "message" => "Usuário autenticado com sucesso",
-      "statusCode" => http_response_code(200)
-    ];
+    return $response = ["message" => "Usuário autenticado com sucesso"];
   }
 
   public function add(User $user): bool
