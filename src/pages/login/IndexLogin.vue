@@ -85,9 +85,9 @@ export default defineComponent({
   },
   methods: {
     async onSubmit() {
-      // this.q.loading.show({
-      //   spinnerColor: "primary",
-      // });
+      this.q.loading.show({
+        spinnerColor: "primary",
+      });
 
       const options = {
         method: "POST",
@@ -103,29 +103,20 @@ export default defineComponent({
       );
 
       const responseJson = await response.json();
-      console.log(response);
-      console.log(responseJson);
+      if (response.status === 200) {
+        this.$router.push("/home");
+      } else {
+        let customError = responseJson.detail;
+        customError = "Usuário ou senha inválidos.";
+        this.q.notify({
+          message: customError,
+          color: "negative",
+          timeout: 2000,
+          position: "top",
+        });
+      }
 
-      // const responseJson = await response.json();
-      // if (responseJson.token) {
-      //   localStorage.setItem(
-      //     "user",
-      //     JSON.stringify("Bearer " + responseJson.token)
-      //   );
-      //   this.$router.push("/home");
-      // } else {
-      //   let customError = responseJson.detail;
-      //   customError = "Usuário ou senha inválidos.";
-
-      //   this.q.notify({
-      //     message: customError,
-      //     color: "negative",
-      //     timeout: 2000,
-      //     position: "top",
-      //   });
-      // }
-
-      // this.q.loading.hide();
+      this.q.loading.hide();
     },
   },
 });
