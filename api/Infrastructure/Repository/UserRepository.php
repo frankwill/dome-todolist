@@ -2,6 +2,7 @@
 
 namespace mmr\todolist\Infrastructure\Repository;
 
+use mmr\todolist\Infrastructure\Service\JWT;
 use mmr\todolist\Model\User;
 use PDO;
 
@@ -14,8 +15,19 @@ class UserRepository
     $this->pdo = $pdo;
   }
 
-  public function find(string $username): array
+  public function find(string $username)
   {
+
+    $payload = [
+      "iat" => time(),
+      "exp" => time() + 10,
+      "username" => $username
+    ];
+
+    // chave deve ficar em um arquivo .env
+    $key = "senha-secreta";
+    $token = JWT::encode($payload, $key);
+
     $sql = "SELECT password_user FROM user WHERE username_user = ?";
     $statement = $this->pdo->prepare($sql);
     $statement->bindValue(1, $username);
@@ -30,7 +42,7 @@ class UserRepository
       exit();
     }
 
-    return $response = ["message" => "Usuário autenticado com sucesso"];
+    return JWT::validate($token);
   }
 
   public function add(User $user): bool
