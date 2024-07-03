@@ -18,15 +18,11 @@ class UserRepository
   public function find(string $username)
   {
 
-    $payload = [
-      "iat" => time(),
-      "exp" => time() + 10,
-      "username" => $username
-    ];
+    $payload = ["username" => $username];
 
     // chave deve ficar em um arquivo .env
-    $key = "senha-secreta";
-    $token = JWT::encode($payload, $key);
+    // $key = "senha-secreta";
+    // $token = JWT::encode($payload, $key);
 
     $sql = "SELECT password_user FROM user WHERE username_user = ?";
     $statement = $this->pdo->prepare($sql);
@@ -42,7 +38,8 @@ class UserRepository
       exit();
     }
 
-    return JWT::validate($token);
+    // return JWT::validate($token);
+    return JWT::encode($payload);
   }
 
   public function add(User $user): bool
