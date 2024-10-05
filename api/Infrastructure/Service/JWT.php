@@ -7,7 +7,7 @@ date_default_timezone_set('America/Sao_Paulo');
 
 class JWT
 {
-  public static function base64Encode($jsonEncode)
+  private static function base64Encode($jsonEncode)
   {
     return str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($jsonEncode));
   }

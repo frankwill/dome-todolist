@@ -20,10 +20,6 @@ class UserRepository
 
     $payload = ["username" => $username];
 
-    // chave deve ficar em um arquivo .env
-    // $key = "senha-secreta";
-    // $token = JWT::encode($payload, $key);
-
     $sql = "SELECT password_user FROM user WHERE username_user = ?";
     $statement = $this->pdo->prepare($sql);
     $statement->bindValue(1, $username);
@@ -38,7 +34,6 @@ class UserRepository
       exit();
     }
 
-    // return JWT::validate($token);
     return JWT::encode($payload);
   }
 
@@ -83,7 +78,8 @@ class UserRepository
       ":password_user" => $user->getPassword(),
       ":name_user" => $user->getName(),
       ":email_user" => $user->getEmail(),
-      ":id_user" => $id, PDO::PARAM_INT
+      ":id_user" => $id,
+      PDO::PARAM_INT
     ]);
 
     return $result;
