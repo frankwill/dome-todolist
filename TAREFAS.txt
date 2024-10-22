@@ -1,0 +1,4 @@
+- BACK-END
+[  ] - No repositório de usuário, onde ficam concentradas minhas consultas ao banco de dados, devo criar mensagens de feedback nos métodos: add, edit e remove (parecido com o método find).
+[  ] - Criar arquivo env.ini e env.example.ini, adicionar no .gitignore o env.ini.
+[  ] - A senha secreta que o JWT precisa pra fazer o encode deve ser armazenada no env.ini, depois recuperada para a classe JWT de alguma forma.
