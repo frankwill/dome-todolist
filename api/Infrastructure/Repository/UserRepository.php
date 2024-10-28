@@ -28,10 +28,7 @@ class UserRepository
     $password_user = $statement->fetch(PDO::FETCH_ASSOC)['password_user'] ?? "";
 
     if (is_null($password_user) || $password_user == false) {
-      $response = ["message" => "Usuário ou senha inválidos"];
-      http_response_code(400);
-      echo json_encode($response);
-      exit();
+      return false;
     }
 
     return JWT::encode($payload);
