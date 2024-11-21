@@ -8,9 +8,15 @@ class ConnectionCreate
 {
   public static function CreateConnection(): PDO
   {
-    // $pdo = new PDO("mysql:host=localhost;dbname=mmr", 'root', 'admin');
-    $dbPath = __DIR__ . "/../../banco.sqlite";
-    $pdo = new PDO("sqlite:$dbPath");
+    $envPath = dirname(__DIR__, 3) . '/env.ini';
+    $envArray = parse_ini_file($envPath);
+
+    $host = $envArray['MYSQL_HOST'];
+    $db = $envArray['MYSQL_DB'];
+    $user = $envArray['MYSQL_USER'];
+    $password = $envArray['MYSQL_PASSWORD'];
+
+    $pdo = new PDO("mysql:host=$host;dbname=$db", "$user", "$password");
     return $pdo;
   }
 }
