@@ -18,7 +18,8 @@ class JWT
 
     $payloadDefault = [
       "iat" => time(),
-      "exp" => time() + (24 * 60 * 60),
+      // "exp" => time() + (24 * 60 * 60),
+      "exp" => time() + 60,
     ];
     $payload = array_merge($payloadDefault, $payload);
     $payload = self::base64Encode(json_encode($payload));
@@ -32,25 +33,41 @@ class JWT
     return $token;
   }
 
-  public static function validate(string $token): string
+  public static function base64Decode(string $text): string
+  {
+    return base64_decode(str_replace(["-", "_"], ["+", "/"], $text), true);
+  }
+
+  public static function validate(string $token)
   {
     $arrayParts = explode(".", $token);
-    if (count($arrayParts) != 3) {
-      echo "Token inválido";
-      exit();
-    }
 
-    $header = $arrayParts[0];
-    $payload = $arrayParts[1];
-    $signature = $arrayParts[2];
+    $headerFromToken = $arrayParts[0];
+    $payloadFromToken = $arrayParts[1];
+    $signatureFromToken = $arrayParts[2];
 
-    $valid = hash_hmac('sha256', "$header.$payload", 'senha-secreta', true);
-    $valid = self::base64Encode($valid);
+    $stringHeaderFromToken = JWT::base64Decode($headerFromToken);
+    $encodedHeaderFromToken = JWT::base64Encode($stringHeaderFromToken);
 
-    if ($signature == $valid) {
-      return $token = "$header.$payload.$signature";
+    $stringPayloadFromToken = JWT::base64Decode($payloadFromToken);
+    $decodedPayloadFromToken = json_decode($stringPayloadFromToken, true);
+    $timeCreated = $decodedPayloadFromToken['iat'];
+    $timeExpire = $decodedPayloadFromToken['exp'];
+    $encodedPayloadFromToken = JWT::base64Encode($stringPayloadFromToken);
+
+    $signatureToCompare = hash_hmac("sha256", "$encodedHeaderFromToken.$encodedPayloadFromToken", 'senha-secreta', true);
+    $signatureToCompare = self::base64Encode($signatureToCompare);
+
+    $revalidatedToken = "$encodedHeaderFromToken.$encodedPayloadFromToken.$signatureToCompare";
+
+    if (time() > $timeExpire) {
+      return json_encode(["message" => "Token expirado"]);
+    } else if (count($arrayParts) != 3) {
+      return json_encode(["message" => "Token inválido"]);
+    } else if ($signatureFromToken != $signatureToCompare) {
+      return json_encode(["message" => "Assinatura do token inválida"]);
     } else {
-      return false;
+      return json_encode(["token" => $revalidatedToken]);
     }
   }
 }
